@@ -3,39 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Earthquake Alert</title>
-
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-
-  <!-- 自訂樣式 -->
-  <link rel="stylesheet" href="styles.css">
+  <title>Safety Alert</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    .line-button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #00c300;
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      border-radius: 5px;
+      margin: 20px 0;
+    }
+    .line-button img {
+      vertical-align: middle;
+      margin-right: 10px;
+      height: 20px;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Earthquake Alert</h1>
-    <div id="alert">Fetching latest earthquake data...</div>
-  </header>
-
-  <main>
-    <div id="map" style="height: 400px;"></div>
-
-    <section id="info">
-      <div class="info-card">
-        <h2>Estimated Magnitude</h2>
-        <p id="magnitude">0</p>
-      </div>
-      <div class="info-card">
-        <h2>Arrival Time</h2>
-        <p id="arrival-time">--:--:--</p>
-      </div>
-    </section>
-  </main>
-
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <!-- 自訂腳本 -->
-  <script src="scripts.js"></script>
+  <h1>Safety Alert</h1>
+  <p>Click the below link to get the newest earthquake notification.</p>
+  <a href="https://notify-bot.line.me/oauth/authorize?response_type=code&client_id=TK8T26jWCtKnR9r6B2xS0C&redirect_uri=https://kaiyin1205.github.io/SafetyAlert.github.io/callback&scope=notify&state=unique_state_value" class="line-button">
+    <img src="https://scdn.line-apps.com/n/line_reg.png" alt="LINE">
+    連結 LINE 通知
+  </a>
 </body>
 </html>
-
