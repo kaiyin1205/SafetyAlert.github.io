@@ -1,55 +1,63 @@
-const API_KEY = 'CWA-83D87A3D-4C19-4B1E-8021-AF70E4774117';
-const API_URL = `https://opendata.cwb.gov.tw/api/v1/rest/datastore/E-A0015-001?Authorization=${API_KEY}`;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Earthquake Alert</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    #earthquake-data {
+      margin-top: 20px;
+      padding: 10px;
+      background: #f4f4f4;
+      border-radius: 5px;
+      display: inline-block;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h1>Earthquake Alert</h1>
+  <p>Fetching latest earthquake data...</p>
+  <div id="earthquake-data"></div>
 
-document.addEventListener('DOMContentLoaded', () => {
-  // 初始化地圖
-  const map = L.map('map').setView([23.5, 121], 7); // 台灣中心位置
+  <script>
+    // API URL
+    const API_URL = 'https://opendata.cwa.gov.tw/api/v1/rest/datastore/E-A0015-002?Authorization=CWA-83D87A3D-4C19-4B1E-8021-AF70E4774117';
 
-  // 加載地圖圖層
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors',
-  }).addTo(map);
+    // Fetch earthquake data
+    fetch(API_URL)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        const records = data.records.earthquake; // Adjust this based on actual API response structure
+        const earthquakeContainer = document.getElementById('earthquake-data');
 
-  // 從中央氣象局 API 獲取地震數據
-  fetch(API_URL)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Earthquake Data:', data); // 調試用
-      const earthquakes = data.records.earthquake;
-
-      if (earthquakes.length > 0) {
-        // 取最新一筆地震數據
-        const latestEarthquake = earthquakes[0];
-        const magnitude = latestEarthquake.earthquakeInfo.magnitude.magnitudeValue;
-        const location = latestEarthquake.earthquakeInfo.epicenter.location;
-        const latitude = parseFloat(latestEarthquake.earthquakeInfo.epicenter.latitude);
-        const longitude = parseFloat(latestEarthquake.earthquakeInfo.epicenter.longitude);
-        const originTime = latestEarthquake.earthquakeInfo.originTime;
-
-        // 更新網頁資訊
-        document.getElementById('alert').textContent = `⚠️ Earthquake Detected at ${location}`;
-        document.getElementById('magnitude').textContent = magnitude;
-        document.getElementById('arrival-time').textContent = new Date(originTime).toLocaleString();
-
-        // 在地圖上標記震央
-        L.marker([latitude, longitude])
-          .addTo(map)
-          .bindPopup(`Earthquake at ${location}<br>Magnitude: ${magnitude}`)
-          .openPopup();
-
-        // 將地圖視角移動到震央
-        map.setView([latitude, longitude], 8);
-      } else {
-        document.getElementById('alert').textContent = 'No recent earthquakes detected.';
-      }
-    })
-    .catch(error => {
-      console.error('Error fetching earthquake data:', error);
-      document.getElementById('alert').textContent = 'Error fetching earthquake data.';
-    });
-});
+        // Display earthquake information
+        if (records && records.length > 0) {
+          earthquakeContainer.innerHTML = `
+            <h2>Latest Earthquake Information</h2>
+            <p><strong>Location:</strong> ${records[0].earthquakeInfo.epicenter.location}</p>
+            <p><strong>Magnitude:</strong> ${records[0].earthquakeInfo.magnitude.magnitudeValue}</p>
+            <p><strong>Depth:</strong> ${records[0].earthquakeInfo.depth.value} km</p>
+            <p><strong>Origin Time:</strong> ${records[0].earthquakeInfo.originTime}</p>
+          `;
+        } else {
+          earthquakeContainer.innerHTML = '<p>No recent earthquake data available.</p>';
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching earthquake data:', error);
+        document.getElementById('earthquake-data').innerHTML = '<p>Error fetching earthquake data.</p>';
+      });
+  </script>
+</body>
+</html>
