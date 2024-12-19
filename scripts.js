@@ -4,7 +4,6 @@ const API_URL = 'https://opendata.cwa.gov.tw/api/v1/rest/datastore/E-A0015-002?A
 
 console.log('Starting API request...');
 
-// Fetch earthquake data
 fetch(API_URL)
   .then(response => {
     console.log('Response received:', response);
@@ -14,10 +13,9 @@ fetch(API_URL)
     return response.json();
   })
   .then(data => {
-    console.log('API Data:', data);
+    console.log('Full API Response:', data);
     const records = data.records.earthquake;
 
-    // Update the UI with earthquake information
     const earthquakeContainer = document.getElementById('earthquake-data');
     if (records && records.length > 0) {
       earthquakeContainer.innerHTML = `
@@ -33,5 +31,5 @@ fetch(API_URL)
   })
   .catch(error => {
     console.error('Error fetching earthquake data:', error);
-    document.getElementById('earthquake-data').innerHTML = '<p>Error fetching earthquake data.</p>';
+    document.getElementById('earthquake-data').innerHTML = `<p>Error fetching earthquake data: ${error.message}</p>`;
   });
