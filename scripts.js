@@ -31,16 +31,38 @@ console.log('scripts.js is running!');
     const API_URL = 'https://opendata.cwa.gov.tw/api/v1/rest/datastore/E-A0015-002?Authorization=CWA-83D87A3D-4C19-4B1E-8021-AF70E4774117';
 
     // Fetch earthquake data
-    fetch(API_URL)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        const records = data.records.earthquake; // Adjust this based on actual API response structure
-        const earthquakeContainer = document.getElementById('earthquake-data');
+    console.log('Starting API request...');
+fetch(API_URL)
+  .then(response => {
+    console.log('Response received:', response);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log('API Data:', data);
+    // 解析資料並更新畫面
+  })
+  .catch(error => {
+    console.error('Error during fetch:', error);
+  });
+fetch(API_URL)
+  .then(response => {
+    console.log('Response received:', response);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    console.log('API Data:', data);
+    // 解析資料並更新畫面
+  })
+  .catch(error => {
+    console.error('Error during fetch:', error);
+  });
+
 
         // Display earthquake information
         if (records && records.length > 0) {
