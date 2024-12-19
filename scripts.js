@@ -1,3 +1,4 @@
+console.log('scripts.js is running!');
 <!DOCTYPE html>
 <html lang="en">
 <head>
