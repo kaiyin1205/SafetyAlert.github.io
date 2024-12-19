@@ -46,3 +46,24 @@ main {
   width: 150px;
 }
 
+.line-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #00c300;
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  margin: 20px 0;
+  text-align: center;
+}
+.line-button img {
+  vertical-align: middle;
+  margin-right: 8px;
+  height: 20px;
+}
+.line-button:hover {
+  background-color: #009f00;
+}
+
