@@ -15,10 +15,10 @@ fetch(API_URL)
   })
   .then(data => {
     console.log('Full API Response:', data);
-    const records = data.records.earthquake;
 
-    // Update the UI with earthquake information
+    const records = data.records.earthquake;
     const earthquakeContainer = document.getElementById('earthquake-data');
+
     if (records && records.length > 0) {
       // 顯示最新的地震資訊
       earthquakeContainer.innerHTML = `
@@ -29,7 +29,7 @@ fetch(API_URL)
         <p><strong>Origin Time:</strong> ${records[0].EarthquakeInfo.OriginTime}</p>
       `;
     } else {
-      // 如果沒有即時地震資料，顯示最近的地震資訊
+      // 如果 `records` 為空，顯示最後一筆地震資料
       const latestEarthquake = data.result.records[data.result.records.length - 1];
       if (latestEarthquake) {
         earthquakeContainer.innerHTML = `
