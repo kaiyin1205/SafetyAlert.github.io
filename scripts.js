@@ -16,7 +16,8 @@ fetch(API_URL)
   .then(data => {
     console.log('Full API Response:', data);
 
-    const records = data.records.earthquake;
+    const records = data.records?.earthquake; // 使用可選鏈接操作符
+
     const earthquakeContainer = document.getElementById('earthquake-data');
 
     if (records && records.length > 0) {
@@ -28,20 +29,10 @@ fetch(API_URL)
         <p><strong>Depth:</strong> ${records[0].EarthquakeInfo.Depth.Value} km</p>
         <p><strong>Origin Time:</strong> ${records[0].EarthquakeInfo.OriginTime}</p>
       `;
+    } else if (records === undefined) {
+      earthquakeContainer.innerHTML = '<p>Error: Earthquake data is undefined. Please check the API response structure.</p>';
     } else {
-      // 如果 `records` 為空，顯示最後一筆地震資料
-      const latestEarthquake = data.result.records[data.result.records.length - 1];
-      if (latestEarthquake) {
-        earthquakeContainer.innerHTML = `
-          <h2>Last Earthquake Information</h2>
-          <p><strong>Location:</strong> ${latestEarthquake.EarthquakeInfo.Epicenter.Location}</p>
-          <p><strong>Magnitude:</strong> ${latestEarthquake.EarthquakeInfo.Magnitude.MagnitudeValue}</p>
-          <p><strong>Depth:</strong> ${latestEarthquake.EarthquakeInfo.Depth.Value} km</p>
-          <p><strong>Origin Time:</strong> ${latestEarthquake.EarthquakeInfo.OriginTime}</p>
-        `;
-      } else {
-        earthquakeContainer.innerHTML = '<p>No earthquake data available.</p>';
-      }
+      earthquakeContainer.innerHTML = '<p>No recent earthquake data available.</p>';
     }
   })
   .catch(error => {
