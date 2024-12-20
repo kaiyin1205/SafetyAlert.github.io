@@ -16,22 +16,27 @@ fetch(API_URL)
   .then(data => {
     console.log('Full API Response:', data);
 
-    const records = data.records?.earthquake; // 使用可選鏈接操作符
+    // 確認 records 的路徑是否正確
+    const records = data.result?.records?.earthquake;
 
     const earthquakeContainer = document.getElementById('earthquake-data');
 
     if (records && records.length > 0) {
       // 顯示最新的地震資訊
+      const latestEarthquake = records[0].EarthquakeInfo;
+
       earthquakeContainer.innerHTML = `
         <h2>Latest Earthquake Information</h2>
-        <p><strong>Location:</strong> ${records[0].EarthquakeInfo.Epicenter.Location}</p>
-        <p><strong>Magnitude:</strong> ${records[0].EarthquakeInfo.Magnitude.MagnitudeValue}</p>
-        <p><strong>Depth:</strong> ${records[0].EarthquakeInfo.Depth.Value} km</p>
-        <p><strong>Origin Time:</strong> ${records[0].EarthquakeInfo.OriginTime}</p>
+        <p><strong>Location:</strong> ${latestEarthquake.Epicenter.Location}</p>
+        <p><strong>Magnitude:</strong> ${latestEarthquake.Magnitude.MagnitudeValue}</p>
+        <p><strong>Depth:</strong> ${latestEarthquake.Depth.Value} km</p>
+        <p><strong>Origin Time:</strong> ${latestEarthquake.OriginTime}</p>
       `;
     } else if (records === undefined) {
+      // 如果 records 為 undefined，顯示提示
       earthquakeContainer.innerHTML = '<p>Error: Earthquake data is undefined. Please check the API response structure.</p>';
     } else {
+      // 如果 records 為空，顯示無資料
       earthquakeContainer.innerHTML = '<p>No recent earthquake data available.</p>';
     }
   })
