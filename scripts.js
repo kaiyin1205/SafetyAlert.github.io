@@ -1,9 +1,10 @@
 console.log('scripts.js is running!');
 
-const API_URL = 'https://opendata.cwa.gov.tw/api/v1/rest/datastore/E-A0015-002?Authorization=CWA-83D87A3D-4C19-4B1E-8021-AF70E4774117';
+const API_URL = 'https://opendata.cwa.gov.tw/api/v1/rest/datastore/E-A0015-002?Authorization=CWA-83D87A3D-4B1E-8021-AF70E4774117';
 
 console.log('Starting API request...');
 
+// Fetch earthquake data
 fetch(API_URL)
   .then(response => {
     console.log('Response received:', response);
@@ -13,7 +14,7 @@ fetch(API_URL)
     return response.json();
   })
   .then(data => {
-    console.log('Full API Response:', data);
+    console.log('API Data:', data);
     const records = data.records.earthquake;
 
     const earthquakeContainer = document.getElementById('earthquake-data');
