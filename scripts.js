@@ -20,6 +20,7 @@ fetch(API_URL)
     // Update the UI with earthquake information
     const earthquakeContainer = document.getElementById('earthquake-data');
     if (records && records.length > 0) {
+      // 顯示最新的地震資訊
       earthquakeContainer.innerHTML = `
         <h2>Latest Earthquake Information</h2>
         <p><strong>Location:</strong> ${records[0].EarthquakeInfo.Epicenter.Location}</p>
@@ -28,7 +29,19 @@ fetch(API_URL)
         <p><strong>Origin Time:</strong> ${records[0].EarthquakeInfo.OriginTime}</p>
       `;
     } else {
-      earthquakeContainer.innerHTML = '<p>No recent earthquake data available.</p>';
+      // 如果沒有即時地震資料，顯示最近的地震資訊
+      const latestEarthquake = data.result.records[data.result.records.length - 1];
+      if (latestEarthquake) {
+        earthquakeContainer.innerHTML = `
+          <h2>Last Earthquake Information</h2>
+          <p><strong>Location:</strong> ${latestEarthquake.EarthquakeInfo.Epicenter.Location}</p>
+          <p><strong>Magnitude:</strong> ${latestEarthquake.EarthquakeInfo.Magnitude.MagnitudeValue}</p>
+          <p><strong>Depth:</strong> ${latestEarthquake.EarthquakeInfo.Depth.Value} km</p>
+          <p><strong>Origin Time:</strong> ${latestEarthquake.EarthquakeInfo.OriginTime}</p>
+        `;
+      } else {
+        earthquakeContainer.innerHTML = '<p>No earthquake data available.</p>';
+      }
     }
   })
   .catch(error => {
