@@ -33,8 +33,5 @@ fetch(API_URL)
   })
   .catch(error => {
     console.error('Error fetching earthquake data:', error);
-    const earthquakeContainer = document.getElementById('earthquake-data');
-    if (earthquakeContainer) {
-      earthquakeContainer.innerHTML = `<p>Error fetching earthquake data: ${error.message}</p>`;
-    }
+    document.getElementById('earthquake-data').innerHTML = '<p>Error fetching earthquake data.</p>';
   });
