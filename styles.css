@@ -107,7 +107,6 @@ h1 {
   position: fixed;
   bottom: 10px;
   left: 10px;
-  transform: translateX(-50%);
   background-color: #444;
   color: #fff;
   padding: 10px 15px;
@@ -115,7 +114,12 @@ h1 {
   font-size: 1.2em;
   font-family: Arial, sans-serif;
   z-index: 1000;
+  max-width: calc(100% - 20px); /* 確保不會超出螢幕寬度 */
+  white-space: nowrap; /* 防止文字換行 */
+  overflow: hidden; /* 隱藏過多的文字 */
+  text-overflow: ellipsis; /* 用省略號表示過長的文字 */
 }
+
 
 /* Centering All Main Sections */
 main {
