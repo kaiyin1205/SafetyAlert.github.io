@@ -30,22 +30,6 @@
       font-size: 1.2em;
     }
 
-    .line-button {
-      display: inline-block;
-      background-color: #00c300;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 5px;
-      font-size: 1.2em;
-      text-decoration: none;
-      margin-top: 20px;
-    }
-
-    .line-button img {
-      vertical-align: middle;
-      margin-right: 10px;
-    }
-
     #map {
       height: 400px;
       margin: 20px auto;
@@ -63,6 +47,22 @@
 
     #earthquake-data h2 {
       margin-top: 0;
+    }
+
+    .line-button {
+      display: inline-block;
+      background-color: #00c300;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 1.2em;
+      text-decoration: none;
+      margin-top: 20px;
+    }
+
+    .line-button img {
+      vertical-align: middle;
+      margin-right: 10px;
     }
   </style>
 </head>
@@ -88,8 +88,6 @@
   <script>
     console.log('scripts.js is running!');
 
-    const API_URL = 'https://opendata.cwa.gov.tw/api/v1/rest/datastore/E-A0015-002?Authorization=CWA-83D87A3D-4C19-4B1E-8021-AF70E4774117';
-
     // 模擬地震資料
     const simulatedEarthquake = {
       date: "2024-12-25",
@@ -108,73 +106,39 @@
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // 顯示地震資訊
-    fetch(API_URL)
-      .then(response => {
-        console.log('Response received:', response);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Full API Response:', data);
-        const records = data.records.earthquake;
+    // 顯示模擬地震資料
+    function showSimulatedEarthquake() {
+      L.marker([simulatedEarthquake.latitude, simulatedEarthquake.longitude]).addTo(map)
+        .bindPopup(`
+          <strong>Location:</strong> ${simulatedEarthquake.location}<br>
+          <strong>Magnitude:</strong> ${simulatedEarthquake.magnitude}<br>
+          <strong>Depth:</strong> ${simulatedEarthquake.depth} km<br>
+          <strong>Origin Time:</strong> ${simulatedEarthquake.originTime}
+        `)
+        .openPopup();
 
-        const earthquakeContainer = document.getElementById('earthquake-data');
-        if (records && records.length > 0) {
-          const latest = records[0];
-          const { Location, Latitude, Longitude, MagnitudeValue, Depth, OriginTime } = latest.EarthquakeInfo;
+      map.setView([simulatedEarthquake.latitude, simulatedEarthquake.longitude], 7);
 
-          // 更新地圖標記
-          L.marker([Latitude, Longitude]).addTo(map)
-            .bindPopup(`
-              <strong>Location:</strong> ${Location}<br>
-              <strong>Magnitude:</strong> ${MagnitudeValue}<br>
-              <strong>Depth:</strong> ${Depth} km<br>
-              <strong>Origin Time:</strong> ${OriginTime}
-            `)
-            .openPopup();
+      const earthquakeContainer = document.getElementById('earthquake-data');
+      earthquakeContainer.innerHTML = `
+        <h2>Simulated Earthquake Information</h2>
+        <p><strong>Date:</strong> ${simulatedEarthquake.date}</p>
+        <p><strong>Location:</strong> ${simulatedEarthquake.location}</p>
+        <p><strong>Magnitude:</strong> ${simulatedEarthquake.magnitude}</p>
+        <p><strong>Depth:</strong> ${simulatedEarthquake.depth} km</p>
+        <p><strong>Origin Time:</strong> ${simulatedEarthquake.originTime}</p>
+      `;
+    }
 
-          map.setView([Latitude, Longitude], 7);
+    // 初始化地震資訊
+    function fetchEarthquakeData() {
+      // 假設使用模擬地震資料
+      showSimulatedEarthquake();
+    }
 
-          earthquakeContainer.innerHTML = `
-            <h2>Latest Earthquake Information</h2>
-            <p><strong>Date:</strong> ${OriginTime.split('T')[0]}</p>
-            <p><strong>Location:</strong> ${Location}</p>
-            <p><strong>Magnitude:</strong> ${MagnitudeValue}</p>
-            <p><strong>Depth:</strong> ${Depth} km</p>
-            <p><strong>Origin Time:</strong> ${OriginTime}</p>
-          `;
-        } else {
-          throw new Error('No earthquake data available');
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching earthquake data:', error);
-
-        // 顯示模擬地震資訊
-        L.marker([simulatedEarthquake.latitude, simulatedEarthquake.longitude]).addTo(map)
-          .bindPopup(`
-            <strong>Location:</strong> ${simulatedEarthquake.location}<br>
-            <strong>Magnitude:</strong> ${simulatedEarthquake.magnitude}<br>
-            <strong>Depth:</strong> ${simulatedEarthquake.depth} km<br>
-            <strong>Origin Time:</strong> ${simulatedEarthquake.originTime}
-          `)
-          .openPopup();
-
-        map.setView([simulatedEarthquake.latitude, simulatedEarthquake.longitude], 7);
-
-        const earthquakeContainer = document.getElementById('earthquake-data');
-        earthquakeContainer.innerHTML = `
-          <h2>Simulated Earthquake Information</h2>
-          <p><strong>Date:</strong> ${simulatedEarthquake.date}</p>
-          <p><strong>Location:</strong> ${simulatedEarthquake.location}</p>
-          <p><strong>Magnitude:</strong> ${simulatedEarthquake.magnitude}</p>
-          <p><strong>Depth:</strong> ${simulatedEarthquake.depth} km</p>
-          <p><strong>Origin Time:</strong> ${simulatedEarthquake.originTime}</p>
-        `;
-      });
+    // 執行初始化
+    fetchEarthquakeData();
   </script>
 </body>
 </html>
+
