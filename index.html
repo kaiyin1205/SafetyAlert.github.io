@@ -6,46 +6,6 @@
   <title>Earthquake Alert</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="styles.css">
-  <style>
-    /* Line Button Container */
-    #line-button-container {
-      display: flex;
-      justify-content: center;
-      margin: 20px 0;
-    }
-
-    /* Line Button */
-    .line-button {
-      display: inline-block;
-      padding: 10px 20px;
-      background-color: #00c300;
-      color: white;
-      text-decoration: none;
-      font-size: 1.5em;
-      font-weight: bold;
-      border-radius: 8px;
-      text-align: center;
-      transition: background-color 0.3s ease;
-    }
-
-    .line-button:hover {
-      background-color: #008f00;
-    }
-
-    /* Current Time Display */
-    #current-time {
-      position: fixed;
-      bottom: 10px;
-      left: 10px;
-      background-color: #444;
-      color: #fff;
-      padding: 10px 15px;
-      border-radius: 5px;
-      font-size: 1.2em;
-      font-family: Arial, sans-serif;
-      z-index: 1000;
-    }
-  </style>
 </head>
 <body>
   <header>
@@ -54,36 +14,40 @@
   </header>
 
   <main>
-    <!-- Map Section -->
-    <div id="map"></div>
+    <div id="layout">
+      <!-- Map Section -->
+      <div id="map"></div>
 
-    <!-- LINE Notify Button -->
-    <div id="line-button-container">
-      <a href="https://notify-bot.line.me/oauth/authorize?response_type=code&client_id=TK8T26jWCtKnR9r6B2xS0C&redirect_uri=https://kaiyin1205.github.io/SafetyAlert.github.io/callback&scope=notify&state=unique_state_value" class="line-button">
-        LINE Notifications
-      </a>
-    </div>
+      <!-- Right-side content -->
+      <div id="right-content">
+        <!-- LINE Notify Button -->
+        <a href="#" class="line-button">
+          <img src="https://scdn.line-apps.com/n/line_reg.png" alt="LINE" class="line-icon">
+          LINE Notifications
+        </a>
 
-    <!-- Notification Threshold Settings -->
-    <div id="settings">
-      <label for="threshold">Set Notification Threshold:</label>
-      <select id="threshold">
-        <option value="1">1 or above</option>
-        <option value="2">2 or above</option>
-        <option value="3" selected>3 or above</option>
-        <option value="4">4 or above</option>
-        <option value="5">5 or above</option>
-      </select>
-    </div>
+        <!-- Notification Threshold Settings -->
+        <div id="settings">
+          <label for="threshold">Set Notification Threshold:</label>
+          <select id="threshold">
+            <option value="1">1 or above</option>
+            <option value="2">2 or above</option>
+            <option value="3" selected>3 or above</option>
+            <option value="4">4 or above</option>
+            <option value="5">5 or above</option>
+          </select>
+        </div>
 
-    <!-- Earthquake Information -->
-    <div id="earthquake-data">
-      <h2>Simulated Earthquake Information</h2>
-      <p><strong>Date:</strong> 2024-12-25</p>
-      <p><strong>Location:</strong> 9.5 km SE of Hualien County</p>
-      <p><strong>Magnitude:</strong> 5.4</p>
-      <p><strong>Depth:</strong> 15 km</p>
-      <p><strong>Origin Time:</strong> 2024-12-25T15:30:00</p>
+        <!-- Earthquake Information -->
+        <div id="earthquake-data">
+          <h2>Simulated Earthquake Information</h2>
+          <p><strong>Date:</strong> 2024-12-25</p>
+          <p><strong>Location:</strong> 9.5 km SE of Hualien County</p>
+          <p><strong>Magnitude:</strong> 5.4</p>
+          <p><strong>Depth:</strong> 15 km</p>
+          <p><strong>Origin Time:</strong> 2024-12-25T15:30:00</p>
+        </div>
+      </div>
     </div>
   </main>
 
@@ -114,13 +78,8 @@
     // Update time every second
     setInterval(updateTime, 1000);
     updateTime();
-
-    // Notification threshold change handler
-    document.getElementById('threshold').addEventListener('change', (e) => {
-      const selectedValue = e.target.value;
-      alert(`Notification threshold updated to: ${selectedValue} or above`);
-    });
   </script>
 </body>
 </html>
+
 
