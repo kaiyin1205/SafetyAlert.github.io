@@ -5,6 +5,9 @@ body {
   padding: 0;
   background-color: #333;
   color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Header */
@@ -17,7 +20,7 @@ header {
 
 h1 {
   margin: 0;
-  font-size: 2em;
+  font-size: 2.5em;
 }
 
 #alert {
@@ -29,29 +32,27 @@ h1 {
 /* Layout */
 #layout {
   display: flex;
-  flex-wrap: nowrap;
+  flex-direction: row;
   justify-content: space-between;
-  align-items: flex-start;
-  width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 10px;
+  width: 100%;
+  padding: 20px;
+  gap: 20px;
 }
 
 /* Map Section */
 #map {
-  height: 500px;
+  height: 600px;
   width: 60%;
   border: 2px solid #fff;
   border-radius: 5px;
 }
 
-/* Right-side Content */
+/* Right-side Section */
 #right-content {
   width: 35%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 20px;
 }
 
@@ -60,24 +61,32 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 15px;
   background-color: #39f;
   color: #fff;
   text-decoration: none;
   font-size: 1.5em;
+  font-family: Arial, sans-serif;
+  padding: 10px 20px;
   border-radius: 5px;
 }
 
 .line-icon {
-  vertical-align: middle;
+  margin-right: 10px;
   width: 24px;
   height: 24px;
-  margin-right: 10px;
+}
+
+.line-button:hover {
+  background-color: #005fbb;
 }
 
 /* Settings Section */
+#settings {
+  text-align: center;
+}
+
 #settings label {
-  font-size: 1.5em;
+  font-size: 1.2em;
 }
 
 #settings select {
@@ -87,10 +96,10 @@ h1 {
 
 /* Earthquake Data */
 #earthquake-data {
-  background-color: #444;
   padding: 15px;
+  background-color: #444;
   border-radius: 5px;
-  text-align: center;
+  text-align: left;
 }
 
 #earthquake-data h2 {
@@ -99,7 +108,6 @@ h1 {
 }
 
 #earthquake-data p {
-  margin: 10px 0;
   font-size: 1.2em;
 }
 
@@ -113,4 +121,6 @@ h1 {
   padding: 10px 15px;
   border-radius: 5px;
   font-size: 1.2em;
+  z-index: 1000;
 }
+
