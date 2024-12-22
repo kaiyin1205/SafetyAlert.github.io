@@ -5,155 +5,102 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Earthquake Alert</title>
 
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-
+  <!-- Styles -->
   <style>
     body {
       font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
       background-color: #333;
       color: #fff;
+      text-align: center;
+      margin: 0;
+      padding: 0;
     }
-    header {
-      margin-bottom: 20px;
+
+    h1 {
+      font-size: 3em;
+      margin: 20px 0;
     }
+
     #alert {
       background-color: red;
       color: white;
       padding: 10px;
-      border-radius: 5px;
+      font-size: 1.2em;
     }
-    #map {
-      height: 400px;
-      margin: 20px 0;
+
+    #notification-settings {
+      margin-top: 20px;
     }
+
     .info-card {
       display: inline-block;
-      margin: 10px;
-      padding: 20px;
-      background-color: #444;
-      border-radius: 5px;
-      text-align: left;
-      width: 200px;
-    }
-    #settings {
-      margin: 20px 0;
-    }
-    #earthquake-data {
-      margin-top: 20px;
-      padding: 10px;
       background: #444;
+      padding: 20px;
+      margin: 10px;
       border-radius: 5px;
-      display: inline-block;
-      text-align: left;
-      color: #fff;
+      font-size: 1.2em;
     }
+
+    .line-button {
+      display: inline-block;
+      background-color: #00c300;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 1.2em;
+      text-decoration: none;
+      margin-top: 20px;
+    }
+
     .line-button img {
       vertical-align: middle;
+      margin-right: 10px;
+    }
+
+    select {
+      padding: 5px;
+      font-size: 1em;
+    }
+
+    #earthquake-data {
+      margin-top: 20px;
+      background: #444;
+      padding: 15px;
+      border-radius: 5px;
+      font-size: 1.2em;
+      display: inline-block;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Earthquake Alert</h1>
-    <div id="alert">Fetching latest earthquake data...</div>
-  </header>
+  <h1>Earthquake Alert</h1>
+  <div id="alert">Fetching latest earthquake data...</div>
 
-  <main>
-    <!-- Map Section -->
-    <div id="map"></div>
+  <!-- LINE Notify Button Section -->
+  <div id="line-notify-section">
+    <a href="https://notify-bot.line.me/oauth/authorize?response_type=code&client_id=TK8T26jWCtKnR9r6B2xS0C&redirect_uri=https://kaiyin1205.github.io/SafetyAlert.github.io/callback&scope=notify&state=unique_state_value" class="line-button">
+      <img src="https://scdn.line-apps.com/n/line_reg.png" alt="LINE" width="20">
+      LINE Notifications
+    </a>
+  </div>
 
-    <!-- LINE Notify Button Section -->
-    <div id="line-notify-section" style="text-align: center; margin-top: 20px;">
-      <a href="https://notify-bot.line.me/oauth/authorize?response_type=code&client_id=TK8T26jWCtKnR9r6B2xS0C&redirect_uri=https://kaiyin1205.github.io/SafetyAlert.github.io/callback&scope=notify&state=unique_state_value" class="line-button">
-        <img src="https://scdn.line-apps.com/n/line_reg.png" alt="LINE">
-        LINE Notifications
-      </a>
-    </div>
+  <!-- Notification Settings -->
+  <div id="notification-settings">
+    <h2>Notification Settings</h2>
+    <label for="threshold">Set Notification Threshold:</label>
+    <select id="threshold">
+      <option value="1">1 or above</option>
+      <option value="2">2 or above</option>
+      <option value="3" selected>3 or above</option>
+      <option value="4">4 or above</option>
+      <option value="5">5 or above</option>
+    </select>
+  </div>
 
-    <!-- User Settings Section -->
-    <section id="settings">
-      <h2>Notification Settings</h2>
-      <label for="magnitude-threshold">Set Notification Threshold:</label>
-      <select id="magnitude-threshold">
-        <option value="1">1 or above</option>
-        <option value="2">2 or above</option>
-        <option value="3">3 or above</option>
-        <option value="4">4 or above</option>
-        <option value="5">5 or above</option>
-      </select>
-    </section>
+  <!-- Earthquake Data Section -->
+  <div id="earthquake-data">No recent earthquake data available.</div>
 
-    <!-- Earthquake Information Section -->
-    <div id="earthquake-data">No recent earthquake data available.</div>
-  </main>
-
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <!-- 自訂腳本 -->
-  <script>
-    console.log('scripts.js is running!');
-
-    const API_URL = 'https://cors-anywhere.herokuapp.com/https://opendata.cwa.gov.tw/api/v1/rest/datastore/E-A0015-002?Authorization=CWA-83D87A3D-4C19-4B1E-8021-AF70E4774117';
-
-    console.log('Starting API request...');
-
-    // Fetch earthquake data
-    function fetchEarthquakeData() {
-      fetch(API_URL)
-        .then(response => {
-          console.log('Response received:', response);
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log('Full API Response:', data);
-
-          const records = data.result?.records?.earthquake;
-          const earthquakeContainer = document.getElementById('earthquake-data');
-          const magnitudeThreshold = document.getElementById('magnitude-threshold').value;
-
-          if (records && records.length > 0) {
-            // Filter data based on threshold
-            const filteredRecords = records.filter(
-              eq => eq.EarthquakeInfo.Magnitude.MagnitudeValue >= magnitudeThreshold
-            );
-
-            if (filteredRecords.length > 0) {
-              const latestEarthquake = filteredRecords[0].EarthquakeInfo;
-
-              earthquakeContainer.innerHTML = `
-                <h2>Latest Earthquake Information</h2>
-                <p><strong>Location:</strong> ${latestEarthquake.Epicenter.Location}</p>
-                <p><strong>Magnitude:</strong> ${latestEarthquake.Magnitude.MagnitudeValue}</p>
-                <p><strong>Depth:</strong> ${latestEarthquake.Depth.Value} km</p>
-                <p><strong>Origin Time:</strong> ${latestEarthquake.OriginTime}</p>
-              `;
-            } else {
-              earthquakeContainer.innerHTML = '<p>No earthquakes match your notification settings.</p>';
-            }
-          } else {
-            earthquakeContainer.innerHTML = '<p>No recent earthquake data available.</p>';
-          }
-        })
-        .catch(error => {
-          console.error('Error fetching earthquake data:', error);
-          document.getElementById('earthquake-data').innerHTML = '<p>Error fetching earthquake data.</p>';
-        });
-    }
-
-    // Initial fetch
-    fetchEarthquakeData();
-
-    // Re-fetch data when the threshold changes
-    document.getElementById('magnitude-threshold').addEventListener('change', () => {
-      console.log('Threshold updated, re-fetching data...');
-      fetchEarthquakeData();
-    });
-  </script>
+  <!-- Scripts -->
+  <script src="scripts.js"></script>
 </body>
 </html>
