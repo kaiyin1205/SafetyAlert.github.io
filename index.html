@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Earthquake Alert</title>
-
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-
-  <style>
+<style>
     body {
       font-family: Arial, sans-serif;
       background-color: #333;
@@ -27,7 +17,7 @@
       background-color: red;
       color: white;
       padding: 10px;
-      font-size: 1.2em;
+      font-size: 1.5em; /* 放大字體 */
     }
 
     #map {
@@ -43,10 +33,12 @@
       border-radius: 10px;
       display: inline-block;
       text-align: left;
+      font-size: 1.2em; /* 放大字體 */
     }
 
     #earthquake-data h2 {
       margin-top: 0;
+      font-size: 1.5em; /* 放大標題 */
     }
 
     .line-button {
@@ -55,7 +47,7 @@
       color: white;
       padding: 10px 20px;
       border-radius: 5px;
-      font-size: 1.2em;
+      font-size: 1.3em; /* 放大按鈕文字 */
       text-decoration: none;
       margin-top: 20px;
     }
@@ -75,104 +67,11 @@
     }
 
     #settings label {
-      font-size: 1.2em;
+      font-size: 1.3em; /* 放大標籤文字 */
     }
 
     #settings select {
-      font-size: 1em;
+      font-size: 1.2em; /* 放大選項字體 */
       margin-left: 10px;
     }
   </style>
-</head>
-<body>
-  <h1>Earthquake Alert</h1>
-  <div id="alert">Fetching latest earthquake data...</div>
-
-  <!-- LINE Notify Button Section -->
-  <div id="line-notify-section">
-    <a href="https://notify-bot.line.me/oauth/authorize?response_type=code&client_id=TK8T26jWCtKnR9r6B2xS0C&redirect_uri=https://kaiyin1205.github.io/SafetyAlert.github.io/callback&scope=notify&state=unique_state_value" class="line-button">
-      LINE Notifications
-    </a>
-  </div>
-
-  <!-- Map -->
-  <div id="map"></div>
-
-  <!-- Notification Settings -->
-  <div id="settings">
-    <label for="magnitude-threshold">Set Notification Threshold:</label>
-    <select id="magnitude-threshold">
-      <option value="1">1 or above</option>
-      <option value="2">2 or above</option>
-      <option value="3" selected>3 or above</option>
-      <option value="4">4 or above</option>
-      <option value="5">5 or above</option>
-    </select>
-  </div>
-
-  <!-- Earthquake Data -->
-  <div id="earthquake-data"></div>
-
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script>
-    console.log('scripts.js is running!');
-
-    // 模擬地震資料
-    const simulatedEarthquake = {
-      date: "2024-12-25",
-      location: "9.5 km SE of Hualien County",
-      magnitude: 5.4,
-      depth: 15,
-      originTime: "2024-12-25T15:30:00",
-      latitude: 23.976,
-      longitude: 121.605
-    };
-
-    // 初始化地圖
-    const map = L.map('map').setView([23.976, 121.605], 7); // 預設中心為模擬地震位置
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
-
-    // 顯示模擬地震資料
-    function showSimulatedEarthquake(magnitudeThreshold) {
-      const earthquakeContainer = document.getElementById('earthquake-data');
-      earthquakeContainer.innerHTML = '';
-
-      if (simulatedEarthquake.magnitude >= magnitudeThreshold) {
-        L.marker([simulatedEarthquake.latitude, simulatedEarthquake.longitude]).addTo(map)
-          .bindPopup(`
-            <strong>Location:</strong> ${simulatedEarthquake.location}<br>
-            <strong>Magnitude:</strong> ${simulatedEarthquake.magnitude}<br>
-            <strong>Depth:</strong> ${simulatedEarthquake.depth} km<br>
-            <strong>Origin Time:</strong> ${simulatedEarthquake.originTime}
-          `)
-          .openPopup();
-
-        earthquakeContainer.innerHTML = `
-          <h2>Simulated Earthquake Information</h2>
-          <p><strong>Date:</strong> ${simulatedEarthquake.date}</p>
-          <p><strong>Location:</strong> ${simulatedEarthquake.location}</p>
-          <p><strong>Magnitude:</strong> ${simulatedEarthquake.magnitude}</p>
-          <p><strong>Depth:</strong> ${simulatedEarthquake.depth} km</p>
-          <p><strong>Origin Time:</strong> ${simulatedEarthquake.originTime}</p>
-        `;
-      } else {
-        earthquakeContainer.innerHTML = '<p>No recent earthquake data available for the selected threshold.</p>';
-      }
-    }
-
-    // 初始化通知門檻監聽
-    document.getElementById('magnitude-threshold').addEventListener('change', (event) => {
-      const threshold = parseFloat(event.target.value);
-      showSimulatedEarthquake(threshold);
-    });
-
-    // 預設門檻執行
-    const initialThreshold = parseFloat(document.getElementById('magnitude-threshold').value);
-    showSimulatedEarthquake(initialThreshold);
-  </script>
-</body>
-</html>
