@@ -5,9 +5,6 @@ body {
   padding: 0;
   background-color: #333;
   color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 /* Header */
@@ -20,7 +17,7 @@ header {
 
 h1 {
   margin: 0;
-  font-size: 2.5em;
+  font-size: 2em;
 }
 
 #alert {
@@ -29,14 +26,33 @@ h1 {
   color: red;
 }
 
+/* Layout */
+#layout {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
 /* Map Section */
 #map {
-  height: 400px;
-  width: 80%;
-  max-width: 800px;
-  margin: 20px auto;
+  height: 500px;
+  width: 60%;
   border: 2px solid #fff;
   border-radius: 5px;
+}
+
+/* Right-side Content */
+#right-content {
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 }
 
 /* LINE Button */
@@ -44,16 +60,12 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 20px auto;
   padding: 10px 15px;
   background-color: #39f;
   color: #fff;
   text-decoration: none;
   font-size: 1.5em;
   border-radius: 5px;
-  font-family: Arial, sans-serif;
-  width: fit-content;
-  text-align: center;
 }
 
 .line-icon {
@@ -64,11 +76,6 @@ h1 {
 }
 
 /* Settings Section */
-#settings {
-  text-align: center;
-  margin: 20px auto;
-}
-
 #settings label {
   font-size: 1.5em;
 }
@@ -76,30 +83,24 @@ h1 {
 #settings select {
   font-size: 1.2em;
   padding: 5px;
-  margin-left: 10px;
 }
 
 /* Earthquake Data */
 #earthquake-data {
-  max-width: 90%;
-  margin: 20px auto;
-  padding: 15px 20px;
   background-color: #444;
+  padding: 15px;
   border-radius: 5px;
-  text-align: center; /* Center text inside the card */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  text-align: center;
 }
 
 #earthquake-data h2 {
   margin-top: 0;
-  font-size: 2em;
+  font-size: 1.8em;
 }
 
 #earthquake-data p {
   margin: 10px 0;
-  font-size: 1.5em;
+  font-size: 1.2em;
 }
 
 /* Current Time Display */
@@ -112,24 +113,4 @@ h1 {
   padding: 10px 15px;
   border-radius: 5px;
   font-size: 1.2em;
-  font-family: Arial, sans-serif;
-  z-index: 1000;
-  max-width: calc(100% - 20px); /* 確保不會超出螢幕寬度 */
-  white-space: nowrap; /* 防止文字換行 */
-  overflow: hidden; /* 隱藏過多的文字 */
-  text-overflow: ellipsis; /* 用省略號表示過長的文字 */
 }
-
-
-/* Centering All Main Sections */
-main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-
-main > * {
-  margin: 10px 0;
-}
-
