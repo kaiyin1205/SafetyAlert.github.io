@@ -28,19 +28,6 @@
       font-size: 1.2em;
     }
 
-    #notification-settings {
-      margin-top: 20px;
-    }
-
-    .info-card {
-      display: inline-block;
-      background: #444;
-      padding: 20px;
-      margin: 10px;
-      border-radius: 5px;
-      font-size: 1.2em;
-    }
-
     .line-button {
       display: inline-block;
       background-color: #00c300;
@@ -56,20 +43,6 @@
       vertical-align: middle;
       margin-right: 10px;
     }
-
-    select {
-      padding: 5px;
-      font-size: 1em;
-    }
-
-    #earthquake-data {
-      margin-top: 20px;
-      background: #444;
-      padding: 15px;
-      border-radius: 5px;
-      font-size: 1.2em;
-      display: inline-block;
-    }
   </style>
 </head>
 <body>
@@ -79,28 +52,8 @@
   <!-- LINE Notify Button Section -->
   <div id="line-notify-section">
     <a href="https://notify-bot.line.me/oauth/authorize?response_type=code&client_id=TK8T26jWCtKnR9r6B2xS0C&redirect_uri=https://kaiyin1205.github.io/SafetyAlert.github.io/callback&scope=notify&state=unique_state_value" class="line-button">
-      <img src="https://scdn.line-apps.com/n/line_reg.png" alt="LINE" width="20">
       LINE Notifications
     </a>
   </div>
-
-  <!-- Notification Settings -->
-  <div id="notification-settings">
-    <h2>Notification Settings</h2>
-    <label for="threshold">Set Notification Threshold:</label>
-    <select id="threshold">
-      <option value="1">1 or above</option>
-      <option value="2">2 or above</option>
-      <option value="3" selected>3 or above</option>
-      <option value="4">4 or above</option>
-      <option value="5">5 or above</option>
-    </select>
-  </div>
-
-  <!-- Earthquake Data Section -->
-  <div id="earthquake-data">No recent earthquake data available.</div>
-
-  <!-- Scripts -->
-  <script src="scripts.js"></script>
 </body>
 </html>
