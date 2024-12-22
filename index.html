@@ -5,82 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Earthquake Alert</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="styles.css">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #333;
-      color: #fff;
+    /* Line Button Container */
+    #line-button-container {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
     }
-    header {
-      background-color: #444;
-      padding: 10px 15px;
-      text-align: center;
-    }
-    h1 {
-      margin: 0;
-      font-size: 2em;
-    }
-    #alert {
-      margin-top: 5px;
-      font-size: 1.2em;
-      color: red;
-    }
-    #map {
-      height: 400px;
-      margin: 20px auto;
-      max-width: 90%;
-    }
+
+    /* Line Button */
     .line-button {
       display: inline-block;
-      text-align: center;
-      margin: 20px auto;
-      padding: 10px 15px;
-      background-color: #39f;
-      color: #fff;
+      padding: 10px 20px;
+      background-color: #00c300;
+      color: white;
       text-decoration: none;
-      font-size: 1.2em;
-      border-radius: 5px;
-      font-family: Arial, sans-serif;
-    }
-    #settings {
-      text-align: center;
-      margin: 20px auto;
-    }
-    #settings label {
-      font-size: 1.2em;
-    }
-    #settings select {
-      font-size: 1.1em;
-      padding: 5px;
-    }
-    #earthquake-data {
-      max-width: 90%;
-      margin: 20px auto;
-      padding: 10px 15px;
-      background-color: #444;
-      border-radius: 5px;
-    }
-    #earthquake-data h2 {
-      margin-top: 0;
       font-size: 1.5em;
+      font-weight: bold;
+      border-radius: 8px;
+      text-align: center;
+      transition: background-color 0.3s ease;
     }
-    #earthquake-data p {
-      margin: 5px 0;
-      font-size: 1.2em;
-    }
-    #current-time {
-      position: fixed;
-      bottom: 10px;
-      left: 10px;
-      background-color: #444;
-      color: #fff;
-      padding: 10px 15px;
-      border-radius: 5px;
-      font-size: 1.2em;
-      font-family: Arial, sans-serif;
-      z-index: 1000;
+
+    .line-button:hover {
+      background-color: #008f00;
     }
   </style>
 </head>
@@ -95,10 +44,11 @@
     <div id="map"></div>
 
     <!-- LINE Notify Button -->
-    <a href="#" class="line-button">
-      <img src="https://scdn.line-apps.com/n/line_reg.png" alt="LINE" style="vertical-align: middle; width: 24px; height: 24px;">
-      LINE Notifications
-    </a>
+    <div id="line-button-container">
+      <a href="https://notify-bot.line.me/oauth/authorize?response_type=code&client_id=YOUR_CLIENT_ID&redirect_uri=YOUR_REDIRECT_URI&scope=notify&state=unique_state_value" class="line-button">
+        LINE Notifications
+      </a>
+    </div>
 
     <!-- Notification Threshold Settings -->
     <div id="settings">
