@@ -64,6 +64,24 @@
       vertical-align: middle;
       margin-right: 10px;
     }
+
+    #settings {
+      margin: 20px auto;
+      text-align: center;
+      background-color: #444;
+      padding: 10px;
+      border-radius: 10px;
+      display: inline-block;
+    }
+
+    #settings label {
+      font-size: 1.2em;
+    }
+
+    #settings select {
+      font-size: 1em;
+      margin-left: 10px;
+    }
   </style>
 </head>
 <body>
@@ -79,6 +97,18 @@
 
   <!-- Map -->
   <div id="map"></div>
+
+  <!-- Notification Settings -->
+  <div id="settings">
+    <label for="magnitude-threshold">Set Notification Threshold:</label>
+    <select id="magnitude-threshold">
+      <option value="1">1 or above</option>
+      <option value="2">2 or above</option>
+      <option value="3" selected>3 or above</option>
+      <option value="4">4 or above</option>
+      <option value="5">5 or above</option>
+    </select>
+  </div>
 
   <!-- Earthquake Data -->
   <div id="earthquake-data"></div>
@@ -107,38 +137,42 @@
     }).addTo(map);
 
     // 顯示模擬地震資料
-    function showSimulatedEarthquake() {
-      L.marker([simulatedEarthquake.latitude, simulatedEarthquake.longitude]).addTo(map)
-        .bindPopup(`
-          <strong>Location:</strong> ${simulatedEarthquake.location}<br>
-          <strong>Magnitude:</strong> ${simulatedEarthquake.magnitude}<br>
-          <strong>Depth:</strong> ${simulatedEarthquake.depth} km<br>
-          <strong>Origin Time:</strong> ${simulatedEarthquake.originTime}
-        `)
-        .openPopup();
-
-      map.setView([simulatedEarthquake.latitude, simulatedEarthquake.longitude], 7);
-
+    function showSimulatedEarthquake(magnitudeThreshold) {
       const earthquakeContainer = document.getElementById('earthquake-data');
-      earthquakeContainer.innerHTML = `
-        <h2>Simulated Earthquake Information</h2>
-        <p><strong>Date:</strong> ${simulatedEarthquake.date}</p>
-        <p><strong>Location:</strong> ${simulatedEarthquake.location}</p>
-        <p><strong>Magnitude:</strong> ${simulatedEarthquake.magnitude}</p>
-        <p><strong>Depth:</strong> ${simulatedEarthquake.depth} km</p>
-        <p><strong>Origin Time:</strong> ${simulatedEarthquake.originTime}</p>
-      `;
+      earthquakeContainer.innerHTML = '';
+
+      if (simulatedEarthquake.magnitude >= magnitudeThreshold) {
+        L.marker([simulatedEarthquake.latitude, simulatedEarthquake.longitude]).addTo(map)
+          .bindPopup(`
+            <strong>Location:</strong> ${simulatedEarthquake.location}<br>
+            <strong>Magnitude:</strong> ${simulatedEarthquake.magnitude}<br>
+            <strong>Depth:</strong> ${simulatedEarthquake.depth} km<br>
+            <strong>Origin Time:</strong> ${simulatedEarthquake.originTime}
+          `)
+          .openPopup();
+
+        earthquakeContainer.innerHTML = `
+          <h2>Simulated Earthquake Information</h2>
+          <p><strong>Date:</strong> ${simulatedEarthquake.date}</p>
+          <p><strong>Location:</strong> ${simulatedEarthquake.location}</p>
+          <p><strong>Magnitude:</strong> ${simulatedEarthquake.magnitude}</p>
+          <p><strong>Depth:</strong> ${simulatedEarthquake.depth} km</p>
+          <p><strong>Origin Time:</strong> ${simulatedEarthquake.originTime}</p>
+        `;
+      } else {
+        earthquakeContainer.innerHTML = '<p>No recent earthquake data available for the selected threshold.</p>';
+      }
     }
 
-    // 初始化地震資訊
-    function fetchEarthquakeData() {
-      // 假設使用模擬地震資料
-      showSimulatedEarthquake();
-    }
+    // 初始化通知門檻監聽
+    document.getElementById('magnitude-threshold').addEventListener('change', (event) => {
+      const threshold = parseFloat(event.target.value);
+      showSimulatedEarthquake(threshold);
+    });
 
-    // 執行初始化
-    fetchEarthquakeData();
+    // 預設門檻執行
+    const initialThreshold = parseFloat(document.getElementById('magnitude-threshold').value);
+    showSimulatedEarthquake(initialThreshold);
   </script>
 </body>
 </html>
-
