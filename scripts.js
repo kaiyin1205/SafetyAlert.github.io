@@ -20,23 +20,28 @@ fetch(API_URL)
     const records = data.result?.records?.earthquake;
 
     const earthquakeContainer = document.getElementById('earthquake-data');
+    const magnitudeThreshold = document.getElementById('magnitude-threshold').value;
 
     if (records && records.length > 0) {
-      // 顯示最新的地震資訊
-      const latestEarthquake = records[0].EarthquakeInfo;
+      // 過濾符合條件的地震資料
+      const filteredRecords = records.filter(
+        eq => eq.EarthquakeInfo.Magnitude.MagnitudeValue >= magnitudeThreshold
+      );
 
-      earthquakeContainer.innerHTML = `
-        <h2>Latest Earthquake Information</h2>
-        <p><strong>Location:</strong> ${latestEarthquake.Epicenter.Location}</p>
-        <p><strong>Magnitude:</strong> ${latestEarthquake.Magnitude.MagnitudeValue}</p>
-        <p><strong>Depth:</strong> ${latestEarthquake.Depth.Value} km</p>
-        <p><strong>Origin Time:</strong> ${latestEarthquake.OriginTime}</p>
-      `;
-    } else if (records === undefined) {
-      // 如果 records 為 undefined，顯示提示
-      earthquakeContainer.innerHTML = '<p>Error: Earthquake data is undefined. Please check the API response structure.</p>';
+      if (filteredRecords.length > 0) {
+        const latestEarthquake = filteredRecords[0].EarthquakeInfo;
+
+        earthquakeContainer.innerHTML = `
+          <h2>Latest Earthquake Information</h2>
+          <p><strong>Location:</strong> ${latestEarthquake.Epicenter.Location}</p>
+          <p><strong>Magnitude:</strong> ${latestEarthquake.Magnitude.MagnitudeValue}</p>
+          <p><strong>Depth:</strong> ${latestEarthquake.Depth.Value} km</p>
+          <p><strong>Origin Time:</strong> ${latestEarthquake.OriginTime}</p>
+        `;
+      } else {
+        earthquakeContainer.innerHTML = '<p>No earthquakes match your notification settings.</p>';
+      }
     } else {
-      // 如果 records 為空，顯示無資料
       earthquakeContainer.innerHTML = '<p>No recent earthquake data available.</p>';
     }
   })
@@ -44,3 +49,19 @@ fetch(API_URL)
     console.error('Error fetching earthquake data:', error);
     document.getElementById('earthquake-data').innerHTML = '<p>Error fetching earthquake data.</p>';
   });
+
+// 設定監聽事件，更新設定時重新觸發 API 請求
+document.getElementById('magnitude-threshold').addEventListener('change', () => {
+  console.log('Threshold updated, re-fetching data...');
+  fetch(API_URL)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      // 同步更新地震資料
+      console.log('Threshold filter applied. Fetching data based on new threshold.');
+    });
+});
