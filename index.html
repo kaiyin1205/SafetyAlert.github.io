@@ -13,36 +13,34 @@
     <div id="alert">Fetching latest earthquake data...</div>
   </header>
 
-  <main>
-    <div id="layout">
-      <!-- Left-side: Map -->
-      <div id="map"></div>
+  <main id="layout">
+    <!-- Left-side: Map -->
+    <div id="map"></div>
 
-      <!-- Right-side: Controls and information -->
-      <div id="right-content">
-        <a href="https://notify-bot.line.me/oauth/authorize?response_type=code&client_id=TK8T26jWCtKnR9r6B2xS0C&redirect_uri=https://kaiyin1205.github.io/SafetyAlert.github.io/callback&scope=notify&state=unique_state_value" 
-           class="line-button">
-          <img src="https://scdn.line-apps.com/n/line_reg.png" alt="LINE" class="line-icon">
-          LINE Notifications
-        </a>
-        <div id="settings">
-          <label for="threshold">Set Notification Threshold:</label>
-          <select id="threshold">
-            <option value="1">1 or above</option>
-            <option value="2">2 or above</option>
-            <option value="3" selected>3 or above</option>
-            <option value="4">4 or above</option>
-            <option value="5">5 or above</option>
-          </select>
-        </div>
-        <div id="earthquake-data">
-          <h2>Simulated Earthquake Information</h2>
-          <p><strong>Date:</strong> 2024-12-25</p>
-          <p><strong>Location:</strong> 9.5 km SE of Hualien County</p>
-          <p><strong>Magnitude:</strong> 5.4</p>
-          <p><strong>Depth:</strong> 15 km</p>
-          <p><strong>Origin Time:</strong> 2024-12-25T15:30:00</p>
-        </div>
+    <!-- Right-side: Controls and information -->
+    <div id="right-content">
+      <a href="https://notify-bot.line.me/oauth/authorize?response_type=code&client_id=TK8T26jWCtKnR9r6B2xS0C&redirect_uri=https://kaiyin1205.github.io/SafetyAlert.github.io/callback&scope=notify&state=unique_state_value" 
+         class="line-button">
+        <img src="https://scdn.line-apps.com/n/line_reg.png" alt="LINE" class="line-icon">
+        LINE Notifications
+      </a>
+      <div id="settings">
+        <label for="threshold">Set Notification Threshold:</label>
+        <select id="threshold">
+          <option value="1">1 or above</option>
+          <option value="2">2 or above</option>
+          <option value="3" selected>3 or above</option>
+          <option value="4">4 or above</option>
+          <option value="5">5 or above</option>
+        </select>
+      </div>
+      <div id="earthquake-data">
+        <h2>Simulated Earthquake Information</h2>
+        <p><strong>Date:</strong> 2024-12-25</p>
+        <p><strong>Location:</strong> 9.5 km SE of Hualien County</p>
+        <p><strong>Magnitude:</strong> 5.4</p>
+        <p><strong>Depth:</strong> 15 km</p>
+        <p><strong>Origin Time:</strong> 2024-12-25T15:30:00</p>
       </div>
     </div>
   </main>
@@ -77,3 +75,4 @@
   </script>
 </body>
 </html>
+
