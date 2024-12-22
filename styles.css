@@ -106,7 +106,7 @@ h1 {
 #current-time {
   position: fixed;
   bottom: 10px;
-  left: 50%;
+  left: 10px;
   transform: translateX(-50%);
   background-color: #444;
   color: #fff;
