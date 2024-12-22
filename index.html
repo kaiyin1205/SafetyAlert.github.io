@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Earthquake Alert</title>
 
-  <!-- Styles -->
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -44,6 +46,12 @@
       margin-right: 10px;
     }
 
+    #map {
+      height: 400px;
+      margin: 20px auto;
+      border-radius: 10px;
+    }
+
     #earthquake-data {
       margin-top: 20px;
       background-color: #444;
@@ -69,15 +77,18 @@
     </a>
   </div>
 
+  <!-- Map -->
+  <div id="map"></div>
+
   <!-- Earthquake Data -->
   <div id="earthquake-data"></div>
 
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     console.log('scripts.js is running!');
 
     const API_URL = 'https://opendata.cwa.gov.tw/api/v1/rest/datastore/E-A0015-002?Authorization=CWA-83D87A3D-4C19-4B1E-8021-AF70E4774117';
-
-    console.log('Starting API request...');
 
     // 模擬地震資料
     const simulatedEarthquake = {
@@ -85,10 +96,19 @@
       location: "9.5 km SE of Hualien County",
       magnitude: 5.4,
       depth: 15,
-      originTime: "2024-12-25T15:30:00"
+      originTime: "2024-12-25T15:30:00",
+      latitude: 23.976,
+      longitude: 121.605
     };
 
-    // Fetch earthquake data
+    // 初始化地圖
+    const map = L.map('map').setView([23.976, 121.605], 7); // 預設中心為模擬地震位置
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // 顯示地震資訊
     fetch(API_URL)
       .then(response => {
         console.log('Response received:', response);
@@ -101,15 +121,30 @@
         console.log('Full API Response:', data);
         const records = data.records.earthquake;
 
-        // 顯示地震資訊
         const earthquakeContainer = document.getElementById('earthquake-data');
         if (records && records.length > 0) {
+          const latest = records[0];
+          const { Location, Latitude, Longitude, MagnitudeValue, Depth, OriginTime } = latest.EarthquakeInfo;
+
+          // 更新地圖標記
+          L.marker([Latitude, Longitude]).addTo(map)
+            .bindPopup(`
+              <strong>Location:</strong> ${Location}<br>
+              <strong>Magnitude:</strong> ${MagnitudeValue}<br>
+              <strong>Depth:</strong> ${Depth} km<br>
+              <strong>Origin Time:</strong> ${OriginTime}
+            `)
+            .openPopup();
+
+          map.setView([Latitude, Longitude], 7);
+
           earthquakeContainer.innerHTML = `
             <h2>Latest Earthquake Information</h2>
-            <p><strong>Date:</strong> ${records[0].EarthquakeInfo.OriginTime.split('T')[0]}</p>
-            <p><strong>Location:</strong> ${records[0].EarthquakeInfo.Epicenter.Location}</p>
-            <p><strong>Magnitude:</strong> ${records[0].EarthquakeInfo.Magnitude.MagnitudeValue}</p>
-            <p><strong>Depth:</strong> ${records[0].EarthquakeInfo.Depth.Value} km</p>
+            <p><strong>Date:</strong> ${OriginTime.split('T')[0]}</p>
+            <p><strong>Location:</strong> ${Location}</p>
+            <p><strong>Magnitude:</strong> ${MagnitudeValue}</p>
+            <p><strong>Depth:</strong> ${Depth} km</p>
+            <p><strong>Origin Time:</strong> ${OriginTime}</p>
           `;
         } else {
           throw new Error('No earthquake data available');
@@ -117,9 +152,20 @@
       })
       .catch(error => {
         console.error('Error fetching earthquake data:', error);
-        const earthquakeContainer = document.getElementById('earthquake-data');
 
         // 顯示模擬地震資訊
+        L.marker([simulatedEarthquake.latitude, simulatedEarthquake.longitude]).addTo(map)
+          .bindPopup(`
+            <strong>Location:</strong> ${simulatedEarthquake.location}<br>
+            <strong>Magnitude:</strong> ${simulatedEarthquake.magnitude}<br>
+            <strong>Depth:</strong> ${simulatedEarthquake.depth} km<br>
+            <strong>Origin Time:</strong> ${simulatedEarthquake.originTime}
+          `)
+          .openPopup();
+
+        map.setView([simulatedEarthquake.latitude, simulatedEarthquake.longitude], 7);
+
+        const earthquakeContainer = document.getElementById('earthquake-data');
         earthquakeContainer.innerHTML = `
           <h2>Simulated Earthquake Information</h2>
           <p><strong>Date:</strong> ${simulatedEarthquake.date}</p>
