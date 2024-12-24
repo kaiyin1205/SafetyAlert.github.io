@@ -90,4 +90,3 @@ fetchEarthquakeData();
 // 監聽使用者更改通知級數設定
 const thresholdElement = document.getElementById('threshold');
 thresholdElement.addEventListener('change', showThresholdMessage);
-
