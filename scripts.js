@@ -72,6 +72,11 @@ function fetchEarthquakeData() {
     });
 }
 
+function showThresholdMessage() {
+  const selectedValue = document.getElementById('threshold').value;
+  alert(`Notification threshold set to: ${selectedValue} or above`);
+}
+
 let autoRefresh;
 
 function resetAutoRefresh() {
@@ -81,3 +86,8 @@ function resetAutoRefresh() {
 
 // 初始化資料並開始自動刷新
 fetchEarthquakeData();
+
+// 監聽使用者更改通知級數設定
+const thresholdElement = document.getElementById('threshold');
+thresholdElement.addEventListener('change', showThresholdMessage);
+
