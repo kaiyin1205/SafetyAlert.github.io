@@ -71,7 +71,12 @@
     // Update time every second
     setInterval(updateTime, 1000);
     updateTime();
+
+    // Add event listener for threshold change
+    document.getElementById('threshold').addEventListener('change', () => {
+      const selectedValue = document.getElementById('threshold').value;
+      alert(`Notification threshold set to: ${selectedValue} or above`);
+    });
   </script>
 </body>
 </html>
-
