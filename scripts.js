@@ -8,6 +8,9 @@ let updateInterval = 300000; // Default: 5 minutes (in milliseconds)
 
 function fetchEarthquakeData() {
   console.log('Fetching earthquake data...');
+  const alertElement = document.getElementById('alert');
+  alertElement.textContent = 'Updating earthquake data...';
+
   fetch(API_URL)
     .then(response => {
       console.log('Response received:', response);
@@ -59,10 +62,13 @@ function fetchEarthquakeData() {
 
       // 更新自動刷新時間
       resetAutoRefresh();
+
+      alertElement.textContent = 'Earthquake data updated successfully.';
     })
     .catch(error => {
       console.error('Error fetching earthquake data:', error);
       document.getElementById('earthquake-data').innerHTML = '<p>Error fetching earthquake data.</p>';
+      alertElement.textContent = 'Error updating earthquake data.';
     });
 }
 
@@ -75,4 +81,3 @@ function resetAutoRefresh() {
 
 // 初始化資料並開始自動刷新
 fetchEarthquakeData();
-
